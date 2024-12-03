@@ -1,0 +1,26 @@
+{
+  "name": "fastify-deprecated",
+  "version": "1.0.0",
+  "description": "Fastify plugin to mark routes as deprecated",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "prebuild": "rm -rf lib",
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "author": "Kevin R. Cooper",
+  "license": "MIT",
+  "devDependencies": {
+    "fastify": "^5.1.0",
+    "standard": "^17.1.2",
+    "ts-node": "^10.9.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "fastify-plugin": "^5.0.1"
+  }
+}
