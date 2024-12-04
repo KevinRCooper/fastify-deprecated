@@ -1,14 +1,27 @@
 import { RouteOptions } from "fastify";
-import { DeprecationPlugin, ExtendedSchema } from "./types";
+import {
+  DeprecationPlugin,
+  DeprecationPluginOptions,
+  ExtendedSchema,
+} from "./types";
 import fp from "fastify-plugin";
+
+const PLUGIN_DEFAULTS = {
+  deprecationMessage:
+    "This route is deprecated and may be removed in the future.",
+  logDeprecationAccess: true,
+  rejectAfterDeprecation: false,
+  setDeprecatedInSchema: true,
+} as const satisfies DeprecationPluginOptions;
 
 const deprecationPlugin: DeprecationPlugin = (fastify, options, done) => {
   const {
     deprecatedRoutes = [],
-    deprecationMessage = "This route is deprecated and may be removed in the future.",
-    logDeprecationAccess = true,
-    rejectAfterDeprecation = false,
-  } = options;
+    deprecationMessage,
+    logDeprecationAccess,
+    rejectAfterDeprecation,
+    setDeprecatedInSchema,
+  } = { ...PLUGIN_DEFAULTS, ...options };
 
   // Handle specific globally-deprecated routes
   fastify.addHook("onRequest", (request, reply, done) => {
@@ -59,7 +72,6 @@ const deprecationPlugin: DeprecationPlugin = (fastify, options, done) => {
     done();
   });
 
-  // Helper function to get or create a schema
   const getOrCreateSchema = (routeOptions: RouteOptions): ExtendedSchema => {
     return (routeOptions.schema as ExtendedSchema) || {};
   };
@@ -69,9 +81,12 @@ const deprecationPlugin: DeprecationPlugin = (fastify, options, done) => {
     const deprecatedRoute = deprecatedRoutes.find(
       (r) => r.path === routeOptions.url,
     );
-    if (!deprecatedRoute) return;
+
+    if (!deprecatedRoute) return; // Skip if route is not deprecated
+    if (!setDeprecatedInSchema) return; // Skip if we don't want to set deprecated in schema
 
     const schema = getOrCreateSchema(routeOptions);
+
     schema.deprecated = true;
 
     let generatedMessage = deprecatedRoute.deprecationDate
@@ -80,17 +95,14 @@ const deprecationPlugin: DeprecationPlugin = (fastify, options, done) => {
 
     if (deprecatedRoute.alternate) {
       generatedMessage += ` Please use ${deprecatedRoute.alternate} instead.`;
-    }
 
-    schema.description = `${generatedMessage}${schema.description ? `\n\n${schema.description}` : ""}`;
-
-    // Add additional information to externalDocs in OpenAPI if alternate is available
-    if (deprecatedRoute.alternate) {
       schema.externalDocs = {
         description: "Refer to the alternate route for more details.",
         url: deprecatedRoute.alternate,
       };
     }
+
+    schema.description = `${generatedMessage}${schema.description ? `\n\n${schema.description}` : ""}`;
 
     routeOptions.schema = schema;
   });

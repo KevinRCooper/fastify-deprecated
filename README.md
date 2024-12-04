@@ -138,6 +138,7 @@ The `deprecatedRoutes` option is an array of objects that define the deprecated 
 | `deprecationDate`        | The date when the route was deprecated.                                                             | :heavy_multiplication_x: |         |
 | `rejectAfterDeprecation` | A boolean indicating whether to reject requests to the deprecated route after the deprecation date. | :heavy_multiplication_x: | `false` |
 | `logDeprecationAccess`   | A boolean indicating whether to log access to deprecated routes.                                    | :heavy_multiplication_x: | `true`  |
+| `setDeprecatedInSchema`  | A boolean indicating whether to set the route as deprecated in the OpenAPI schema.                  | :heavy_multiplication_x: | `true`  |
 
 [Back to top](#fastify-deprecated)
 

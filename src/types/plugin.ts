@@ -90,6 +90,14 @@ export type DeprecationPluginOptions = {
    * If set to `false`, the plugin **will not log** access to deprecated routes.
    */
   logDeprecationAccess?: boolean;
+  /**
+   * ## Deprecated In Schema
+   * This option is used to determine if the deprecated routes should be marked as deprecated in the OpenAPI schema.
+   * By default, the plugin **will mark deprecated** routes in the OpenAPI schema.
+   *
+   * If set to `false`, the plugin **will not mark** deprecated routes in the OpenAPI schema.
+   */
+  setDeprecatedInSchema?: boolean;
 };
 
 // Extended schema interface for OpenAPI support
