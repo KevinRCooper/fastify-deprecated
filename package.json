@@ -10,7 +10,11 @@
   "scripts": {
     "prebuild": "rm -rf lib",
     "build": "tsc",
-    "test": "vitest"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "author": "Kevin R. Cooper",
   "license": "MIT",
@@ -18,10 +22,17 @@
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
     "@commitlint/cz-commitlint": "^19.5.0",
+    "@eslint/js": "^9.16.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
     "commitizen": "^4.3.1",
+    "eslint": "^8.57.1",
     "fastify": "^5.1.0",
+    "globals": "^15.13.0",
+    "prettier": "3.4.2",
     "standard": "^17.1.2",
     "ts-node": "^10.9.2",
+    "typescript-eslint": "^8.17.0",
     "vitest": "^2.1.8"
   },
   "dependencies": {
