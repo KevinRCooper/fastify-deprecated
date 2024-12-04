@@ -15,6 +15,10 @@
   "author": "Kevin R. Cooper",
   "license": "MIT",
   "devDependencies": {
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@commitlint/cz-commitlint": "^19.5.0",
+    "commitizen": "^4.3.1",
     "fastify": "^5.1.0",
     "standard": "^17.1.2",
     "ts-node": "^10.9.2",
@@ -22,5 +26,10 @@
   },
   "dependencies": {
     "fastify-plugin": "^5.0.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
   }
 }

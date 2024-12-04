@@ -1,7 +1,11 @@
 # Fastify-Deprecated
+[![Fastify](https://img.shields.io/badge/Fastify-%5E4.x-blue?style=flat&logo=fastify&logoColor=white)](https://fastify.dev)
+[![TypeScript](https://shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=FFF)](https://www.typescriptlang.org)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+
+
 Mark Fastify routes as deprecated
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
 ## :rocket: Installation
 ```shell
@@ -15,6 +19,7 @@ npm i fastify-deprecated
 - [Deprecated Routes Configuration](#deprecated-routes-configuration)
 - [Options](#options)
 - [Compatibility](#compatibility)
+- [Contributing](#contributing)
 - [License](#license)
 
 ## Usage
@@ -132,12 +137,35 @@ The `deprecatedRoutes` option is an array of objects that define the deprecated 
 | ---------------|-----------------|
 | `^1.x`         | `^5.x`          |
 | `^1.x`         | `^4.x`          |
-| `^1.x`         | `^3.x`          |
 
 
 Please note that if a Fastify version is out of support, then so are the corresponding version(s) of this plugin
 in the table above.
 See [Fastify's LTS policy](https://github.com/fastify/fastify/blob/main/docs/Reference/LTS.md) for more details.
+
+[Back to top](#fastify-deprecated)
+
+## Contributing
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
+We welcome contributions to the Fastify-Deprecated plugin! If you would like to contribute, please follow these guidelines:
+
+1. **Fork** the repository.
+2. **Clone** your forked repository to your local machine.
+3. **Install** dependencies using `npm i`.
+4. **Create a new branch** for your feature or bugfix.
+5. **Write** your code and tests.
+6. **Test** your changes using `npm test`.
+7. **Commit** your changes using `git commit`. You will be guided through the process of making a commit message.
+   > **Note**: We use [Commitizen](http://commitizen.github.io/cz-cli/) to format our commit messages and enforce [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) through commitlint.
+   > **Note**: We use `husky` to run commit hooks that check for tests and formatting.
+8. **Push** your branch to your forked repository.
+9. **Create a pull request** from your forked repository's branch to the `dev` branch of this repository.
+
+
+
+Thank you for your contributions!
 
 [Back to top](#fastify-deprecated)
 ## License
