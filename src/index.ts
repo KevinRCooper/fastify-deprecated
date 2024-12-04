@@ -25,19 +25,22 @@ const deprecationPlugin: DeprecationPlugin = (fastify, options, done) => {
                 );
             }
 
+            // If an alternate route is provided, include it in the response
+            const optionalNewRoute = route.alternate ? ` Please use ${route.alternate} instead.` : '';
+
+            reply.header('Deprecation', route.deprecationDate || 'true');
+            if (route.alternate) {
+                reply.header('Link', `<${route.alternate}>; rel="alternate,deprecated"`);
+            };
+
             // Determine if we should reject routes after the deprecation date
             const shouldRejectAfterDeprecation = route.rejectAfterDeprecation ?? rejectAfterDeprecation;
             if (shouldRejectAfterDeprecation && deprecationDate && currentDate > deprecationDate) {
                 reply.status(410).send({
                     error: 'Gone',
-                    message: `This route has been deprecated as of ${deprecationDate.toISOString()} and is no longer available.`,
+                    message: `This route has been deprecated as of ${deprecationDate.toISOString()} and is no longer available.${optionalNewRoute}`,
                 });
                 return;
-            }
-
-            reply.header('Deprecation', route.deprecationDate || 'true');
-            if (route.alternate) {
-                reply.header('Link', `<${route.alternate}>; rel="alternate,deprecated"`);
             }
         }
         done();
