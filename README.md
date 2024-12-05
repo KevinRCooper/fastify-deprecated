@@ -114,16 +114,83 @@ When accessing a deprecated route, the response will include the following:
 
 [Back to top](#fastify-deprecated)
 
-## Options
+## Global vs. Route-Level Deprecation
+
+The plugin supports both global and route-level deprecation. Global deprecation options apply to all routes, while route-level deprecation options applies to specific routes. If a route has conflicting options, the route-level options take precedence.
+
+### Global Deprecation
+
+```typescript
+app.register(fastifyDeprecated, {
+  deprecatedRoutes: [
+    {
+      path: "/deprecated-route",
+      deprecationDate: "2025-01-01",
+    },
+  ],
+  rejectAfterDeprecation: true,
+  logDeprecationAccess: false,
+});
+```
+
+> When `rejectAfterDeprecation` is set to `true`, requests to deprecated routes will be rejected after the deprecation date. This is `false` by default on both global and route-level deprecation.
+>
+> If `logDeprecationAccess` is set to `false`, access to deprecated routes will not be logged.
+
+### Route-Level Deprecation
+
+```typescript
+app.register(fastifyDeprecated, {
+  deprecatedRoutes: [
+    {
+      path: "/deprecated-route",
+      deprecationDate: "2025-01-01",
+    },
+    {
+      path: "/deprecated-route-not-auto-rejected",
+      deprecationDate: "2025-01-01",
+      rejectAfterDeprecation: false,
+    },
+  ],
+  rejectAfterDeprecation: true,
+});
+```
+
+> The `rejectAfterDeprecation` option can be overridden at the route level. In the example above, requests to `/deprecated-route` will be rejected after the deprecation date, while requests to `/deprecated-route-not-auto-rejected` will not be rejected.
+
+## Plugin Options
 
 The plugin accepts the following options:
 
 | Option                                                 | Description                                                                                         | Required                 | Default                                                        |
 | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------------------------- |
 | [`deprecatedRoutes`](#deprecated-routes-configuration) | An array of objects that define the deprecated routes.                                              | :heavy_check_mark:       | `[]`                                                           |
-| `deprecationMessage`                                   | A custom message to include in the response body.                                                   | :heavy_multiplication_x: | `"This route is deprecated and may be removed in the future."` |
-| `rejectAfterDeprecation`                               | A boolean indicating whether to reject requests to the deprecated route after the deprecation date. | :heavy_multiplication_x: | `false`                                                        |
-| `logDeprecationAccess`                                 | A boolean indicating whether to log access to deprecated routes.                                    | :heavy_multiplication_x: | `true`                                                         |
+| [`deprecationMessage`](#deprecation-message)           | A custom message to include in the response body.                                                   | :heavy_multiplication_x: | `"This route is deprecated and may be removed in the future."` |
+| [`rejectAfterDeprecation`](#reject-after-deprecation)  | A boolean indicating whether to reject requests to the deprecated route after the deprecation date. | :heavy_multiplication_x: | `false`                                                        |
+| [`logDeprecationAccess`](#log-deprecation-access)      | A boolean indicating whether to log access to deprecated routes.                                    | :heavy_multiplication_x: | `true`                                                         |
+
+#### Deprecation Message
+
+The `deprecationMessage` option allows you to customize the message included in the response body when accessing a deprecated route.
+
+This message will be included in the response body when no date or alternate route is provided in the deprecated route configuration.
+
+```json
+{
+  "error": "Gone",
+  "message": "This route is deprecated and may be removed in the future."
+}
+```
+
+#### Reject After Deprecation
+
+By default, requests to deprecated routes will still be accepted after the deprecation date. This default behavior is to prevent breaking changes for clients that may not have updated their code. It's easy to forget to this plugin is in place and on a Friday before a long weekend, you may not want to accidentally break your clients' code.
+
+However, you can set `rejectAfterDeprecation` to `true` at a global or local level to reject requests to deprecated routes after the deprecation date.
+
+#### Log Deprecation Access
+
+By default, access to deprecated routes will be logged. If you want to disable logging, you can set `logDeprecationAccess` to `false`. This is useful for capturing metrics on how many users are still accessing deprecated routes and adjusting your deprecation strategy accordingly.
 
 [Back to top](#fastify-deprecated)
 
